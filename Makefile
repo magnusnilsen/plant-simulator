@@ -6,7 +6,7 @@ setup:
 	cd web && npm install
 
 sim:
-	.venv/bin/uvicorn plant_sim.api:app --reload --port 8000
+	.venv/bin/uvicorn plant_sim.api:app --reload --reload-dir sim --reload-dir data --port 8000
 
 web:
 	cd web && npm run dev
