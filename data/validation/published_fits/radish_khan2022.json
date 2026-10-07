@@ -1,0 +1,15 @@
+{
+  "id": "radish_khan2022",
+  "citation": "Khan J, Ullah S, Shah S, Sadaf, Khan S, Sulaiman. 2022. Vegetos. https://doi.org/10.1007/s42535-022-00490-4. Table 3.",
+  "r_squared_reported": 0.527,
+  "unit_note": "The paper labels kT as MPa·°C·h. In their equation 5 it is a slope of base water potential against temperature, so the simulator treats it as MPa/°C.",
+  "germination": {
+    "tb_c": 15.0,
+    "to_c": 20.0,
+    "tc_c": 40.0,
+    "theta_htt_mpa_c_h": 1008.0,
+    "psi_b50_mpa": -0.41,
+    "sigma_psi_b_mpa": 0.57,
+    "k_t_mpa_per_c": 0.104
+  }
+}

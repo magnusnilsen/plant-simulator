@@ -1,0 +1,4 @@
+temperature_c,water_potential_mpa,germination_fraction,hours,source,use
+15,-0.2,0.4067,,Khan et al. 2022 results: maximum of 40.67% at 15°C under −0.2 MPa,1
+30,-0.6,0.13,,Khan et al. 2022 results: minimum germination of 13% at 30°C under −0.6 MPa,1
+40,-0.8,0.13,,Abstract also says 13% at −0.8 MPa and 40°C; the methods list only 0 to −0.6 MPa so this row is not scored,0
