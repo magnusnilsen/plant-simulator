@@ -4,7 +4,7 @@ An interactive encyclopedia of how a seed becomes a seedling.
 
 Phase 1 is germination through the early root and hypocotyl, for three species: Arabidopsis (the laboratory weed), lettuce, and garden radish. You set temperature and soil water potential. The page recomputes the whole incubation and tells you which model the number came from, when that model was published, and where it is weak.
 
-The science is Python. The page is a local web app. They talk over HTTP and a WebSocket.
+The science is Python. The page is a local web app with a 3D cross-section of the soil (React, three.js, Radix, Tailwind). They talk over HTTP and a WebSocket.
 
 ```bash
 make setup

@@ -50,7 +50,7 @@ type Props = {
   x: number;
   z: number;
   focused: boolean;
-  view: { water: boolean; labels: boolean; xray: boolean; scale: boolean; section: boolean };
+  view: { water: boolean; labels: boolean; xray: boolean; scale: boolean; section: boolean; soil: boolean };
   onFocus: () => void;
 };
 
@@ -227,7 +227,7 @@ export function Plant({ id, name, display, sample, uptake, x, z, focused, view, 
         />
       )}
 
-      {view.scale && view.section && <ScaleBar unitsPerMm={pose.unitsPerMm} x={0.52} />}
+      {view.scale && (view.section || !view.soil) && <ScaleBar unitsPerMm={pose.unitsPerMm} x={-0.42} />}
 
       {view.labels && (
         <Html position={[0, nameHeight, 0]} zIndexRange={[20, 0]}>
@@ -307,8 +307,8 @@ function ScaleBar({ unitsPerMm, x }: { unitsPerMm: number; x: number }) {
           <meshBasicMaterial color="#ffffff" transparent opacity={0.85} />
         </mesh>
       ))}
-      <Html position={[0.03, -length / 2, 0]} zIndexRange={[20, 0]}>
-        <div className="-translate-y-1/2 font-mono text-[10px] whitespace-nowrap text-fg">{mm} mm</div>
+      <Html position={[-0.03, -length / 2, 0]} zIndexRange={[20, 0]}>
+        <div className="-translate-x-full -translate-y-1/2 font-mono text-[10px] whitespace-nowrap text-fg">{mm} mm</div>
       </Html>
     </group>
   );

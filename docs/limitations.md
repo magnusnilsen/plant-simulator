@@ -18,6 +18,8 @@ Khan et al. 2022 did publish a hydrothermal fit for radish. It is scored in `dat
 
 Millimetres of root and hypocotyl. Useful for the drawing. Not a measurement.
 
+The 3D view. The seed swelling, root length, shoot length, and water flow are driven by model outputs. The shape is not: the gravitropic turn, the apical hook, when the hook opens and the cotyledons green (at the soil surface, as a stand-in for light), root hair placement, and seed outlines are drawing rules. Each plant is drawn to its own scale, with its typical root span at one scene unit, so a thale cress and a radish side by side are not to scale with each other. Turn on scale bars to compare them.
+
 The respiration index. A temperature rule of thumb times a wetness factor. No biochemistry.
 
 ## Not in this phase at all
@@ -34,4 +36,4 @@ The respiration index. A temperature rule of thumb times a wetness factor. No bi
 
 ## How to read a result
 
-If the page says the median seed never finishes, waiting longer will not help. Change temperature or water. If it gives a time, that time is the middle of the packet, and the curve shows the early and late seeds. The confidence tags under "How this step is modelled" tell you which of those numbers came from a table and which were chosen so the story would sit on the right timescale.
+If the page says the median seed never finishes, waiting longer will not help. Change temperature or water. If it gives a time, that time is the middle of the packet, and the curve shows the early and late seeds. The confidence tags on the inspector's Numbers tab tell you which of those numbers came from a table and which were chosen so the story would sit on the right timescale.

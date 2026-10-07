@@ -122,10 +122,6 @@ function GhostSoil({ width }: { width: number }) {
       <gridHelper args={[width, Math.round(width * 5), "#ffffff", "#ffffff"]} position={[0, 0.001, 0]} scale={[1, 1, 2 / width]}>
         <lineBasicMaterial attach="material" transparent opacity={0.06} />
       </gridHelper>
-      <mesh position={[0, -SOIL_DEPTH / 2, 0]}>
-        <boxGeometry args={[width, SOIL_DEPTH, 0.002]} />
-        <meshBasicMaterial color="#ffffff" transparent opacity={0.015} depthWrite={false} />
-      </mesh>
     </group>
   );
 }
