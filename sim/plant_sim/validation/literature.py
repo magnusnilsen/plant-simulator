@@ -175,6 +175,15 @@ def _interpret(params: GerminationParams, used: list[ScoredRow]) -> str:
     return "Scored against the quoted final germination percentages."
 
 
+def main() -> None:
+    destination = validation_dir() / "plots"
+    score = write_artifacts(destination)
+    print(
+        f"{score.fit_id}: RMSE={score.rmse:.3f} R2={score.r_squared} "
+        f"wrote {destination}"
+    )
+
+
 def _scatter_svg(score: LiteratureScore) -> str:
     width, height = 420, 420
     pad = 48
@@ -203,3 +212,7 @@ def _scatter_svg(score: LiteratureScore) -> str:
   {''.join(marks)}
 </svg>
 """
+
+
+if __name__ == "__main__":
+    main()
