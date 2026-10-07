@@ -29,11 +29,15 @@
     "respiration_q10": 2.0
   },
   "display": {
+    "seed_length_mm": 4.0,
+    "sowing_depth_mm": 3.0,
+    "cotyledon_mm": 9.0,
     "root_span_mm": 28.0,
     "hypocotyl_span_mm": 32.0,
-    "coat": "#5f7d62",
-    "embryo": "#d5e2bc",
-    "accent": "#8eaf6a"
+    "coat": "#cfc6ae",
+    "embryo": "#efe8c9",
+    "stem": "#cfe0a0",
+    "accent": "#6cc6c2"
   },
   "provenance": [
     {

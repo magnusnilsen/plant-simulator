@@ -31,6 +31,14 @@ def test_cardinals_and_signs_are_biological():
         assert species.imbibition.m_initial < species.imbibition.h_metabolism
 
 
+def test_display_hints_put_the_seed_in_the_soil():
+    for species in load_species().values():
+        display = species.display
+        assert display.seed_length_mm < display.cotyledon_mm
+        assert display.sowing_depth_mm < display.hypocotyl_span_mm
+    assert get_species("radish").display.sowing_depth_mm > get_species("lettuce").display.sowing_depth_mm
+
+
 def test_get_species_unknown_id():
     with pytest.raises(KeyError, match="unknown species"):
         get_species("oak")

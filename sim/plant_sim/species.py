@@ -101,10 +101,14 @@ class DisplayParams(BaseModel):
 
     model_config = ConfigDict(extra="forbid")
 
+    seed_length_mm: float = Field(gt=0)
+    sowing_depth_mm: float = Field(ge=0)
+    cotyledon_mm: float = Field(gt=0)
     root_span_mm: float = Field(gt=0)
     hypocotyl_span_mm: float = Field(gt=0)
     coat: str
     embryo: str
+    stem: str
     accent: str
 
 
