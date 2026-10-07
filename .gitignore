@@ -22,5 +22,4 @@ blob-report/
 .env.*
 !.env.example
 
-data/validation/plots/*.svg
-data/validation/report.json
+data/validation/plots/
