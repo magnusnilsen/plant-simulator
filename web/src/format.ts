@@ -46,3 +46,56 @@ export function modelForPhase(phase: Sample["phase"]): string {
   if (phase === "seedling") return "seedling";
   return "hydrothermal";
 }
+
+export const PHASE_COLOURS: Record<Sample["phase"], string> = {
+  blocked: "#6c746e",
+  imbibition: "#7cc7ff",
+  activation: "#f2b866",
+  emergence: "#f0a46a",
+  seedling: "#8fd16a",
+};
+
+export const PHASE_LABELS: Record<Sample["phase"], string> = {
+  blocked: "Stalled",
+  imbibition: "Taking up water",
+  activation: "Waking up",
+  emergence: "Root out",
+  seedling: "Seedling",
+};
+
+export function formatHours(hours: number): string {
+  const day = Math.floor(hours / 24);
+  const rest = hours - day * 24;
+  return `d${day} ${rest.toFixed(0).padStart(2, "0")}h`;
+}
+
+/** Median seed's base water potential once the heat shift above the optimum is applied. */
+export function shiftedPsiB50(germination: Record<string, number>, temperatureC: number): number {
+  const { psi_b50_mpa: psi, to_c: to, k_t_mpa_per_c: kT } = germination;
+  return psi + kT * Math.max(0, temperatureC - to);
+}
+
+const PARAMETER_LABELS: Record<string, string> = {
+  "germination.tb_c": "Base temperature",
+  "germination.to_c": "Optimum",
+  "germination.tc_c": "Ceiling",
+  "germination.theta_htt_mpa_c_h": "Hydrothermal dose θ",
+  "germination.psi_b50_mpa": "Median base water potential",
+  "germination.sigma_psi_b_mpa": "Spread of that threshold",
+  "germination.k_t_mpa_per_c": "Heat slope of the threshold",
+};
+
+export function labelFor(parameter: string): string {
+  return PARAMETER_LABELS[parameter] ?? parameter;
+}
+
+export function formatParam(parameter: string, germination: Record<string, number>): string {
+  const key = parameter.split(".")[1];
+  const value = germination[key];
+  if (value === undefined) return "";
+  if (parameter.endsWith("_c")) return `${value.toFixed(0)}°C`;
+  if (parameter.includes("theta")) return `${value.toFixed(0)} MPa·°C·h`;
+  if (parameter.includes("k_t")) return `${value.toFixed(3)} MPa/°C`;
+  if (parameter.includes("sigma") || parameter.includes("psi")) return `${value.toFixed(3)} MPa`;
+  return String(value);
+}

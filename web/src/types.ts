@@ -12,10 +12,14 @@ export type Sample = {
 };
 
 export type Display = {
+  seed_length_mm: number;
+  sowing_depth_mm: number;
+  cotyledon_mm: number;
   root_span_mm: number;
   hypocotyl_span_mm: number;
   coat: string;
   embryo: string;
+  stem: string;
   accent: string;
 };
 

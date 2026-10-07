@@ -1,0 +1,87 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono Variable", ui-monospace, "SF Mono", monospace;
+
+  --color-ink-950: #090b0a;
+  --color-ink-900: #101312;
+  --color-ink-850: #151918;
+  --color-ink-800: #1b201e;
+  --color-ink-700: #252b28;
+  --color-fg: #e7ebe7;
+  --color-fg-muted: #a1a9a2;
+  --color-fg-subtle: #6c746e;
+  --color-line: rgb(255 255 255 / 0.07);
+  --color-line-strong: rgb(255 255 255 / 0.13);
+  --color-leaf: #8fd16a;
+  --color-water: #7cc7ff;
+  --color-sun: #f2b866;
+  --color-warn: #f0a46a;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  overflow: hidden;
+  background: var(--color-ink-950);
+  color: var(--color-fg);
+  font-family: var(--font-sans);
+  font-size: 12px;
+  line-height: 1.45;
+  font-feature-settings: "cv11", "ss01", "ss03";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background: rgb(143 209 106 / 0.3);
+}
+
+.canvas-backdrop {
+  background:
+    radial-gradient(1200px 700px at 50% 38%, rgb(46 58 50 / 0.55), transparent 70%),
+    radial-gradient(900px 500px at 80% 110%, rgb(64 46 32 / 0.35), transparent 70%),
+    radial-gradient(rgb(255 255 255 / 0.045) 1px, transparent 1px) 0 0 / 22px 22px,
+    var(--color-ink-950);
+}
+
+.panel {
+  background: color-mix(in oklab, var(--color-ink-900) 84%, transparent);
+  backdrop-filter: blur(20px) saturate(1.25);
+  -webkit-backdrop-filter: blur(20px) saturate(1.25);
+  border: 1px solid var(--color-line);
+  border-radius: 12px;
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.04),
+    0 16px 40px -16px rgb(0 0 0 / 0.7),
+    0 2px 6px -2px rgb(0 0 0 / 0.4);
+}
+
+.scroll-quiet {
+  scrollbar-width: thin;
+  scrollbar-color: rgb(255 255 255 / 0.12) transparent;
+}
+
+.scene-name {
+  transform: translate(-50%, 0);
+  text-align: center;
+  white-space: nowrap;
+  pointer-events: none;
+  user-select: none;
+}
+
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition: none !important;
+  }
+}

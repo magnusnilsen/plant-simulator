@@ -1,292 +1,166 @@
-import { useEffect, useState } from "react";
-import { modelForPhase, sampleAt, signedMpa, soilWords } from "./format";
-import { Stage } from "./Stage";
+import { Tooltip } from "radix-ui";
+import { useEffect, useMemo, useRef } from "react";
+import { sampleAt } from "./format";
+import { ErrorBoundary } from "./ErrorBoundary";
+import { ControlPanel } from "./panels/ControlPanel";
+import { Inspector } from "./panels/Inspector";
+import { Timeline } from "./panels/Timeline";
+import { Toolbar, VIEW_SHORTCUTS } from "./panels/Toolbar";
+import { CalloutOverlay } from "./scene/CalloutLayer";
+import { Scene } from "./scene/Scene";
+import { DURATION_H, useStore } from "./store";
+import type { SimulationResult } from "./types";
 import { useEncyclopedia, useSimulation, useSpeciesDetail } from "./useSimulation";
 
-const SPECIES = [
-  { id: "arabidopsis", label: "Arabidopsis" },
-  { id: "lettuce", label: "Lettuce" },
-  { id: "radish", label: "Radish" },
-] as const;
-
-const MODELS = [
-  { id: "hydrothermal", label: "The dose" },
-  { id: "imbibition", label: "Wetting" },
-  { id: "seedling", label: "Elongation" },
-  { id: "respiration", label: "Respiration" },
-] as const;
-
-const DURATION_H = 168;
 const N_POINTS = 169;
+const HOURS_PER_SECOND = 12;
 
-export function App() {
-  const [speciesIds, setSpeciesIds] = useState<string[]>(["radish"]);
-  const [temperature, setTemperature] = useState(20);
-  const [dryness, setDryness] = useState(0.02);
-  const [timeH, setTimeH] = useState(0);
-  const [playing, setPlaying] = useState(true);
-  const [physics, setPhysics] = useState(false);
-  const [manualId, setManualId] = useState("radish");
-  const [pinnedModel, setPinnedModel] = useState<string | null>(null);
-
-  const waterPotential = -dryness;
-  const { result, error } = useSimulation({
-    species_ids: speciesIds,
-    temperature_c: temperature,
-    water_potential_mpa: waterPotential,
-    duration_h: DURATION_H,
-    n_points: N_POINTS,
-  });
-  const encyclopedia = useEncyclopedia();
-  const detail = useSpeciesDetail(manualId);
-
+function usePlayback() {
+  const playing = useStore((s) => s.playing);
   useEffect(() => {
     if (!playing) return;
     let frame = 0;
     let previous = performance.now();
     const step = (now: number) => {
-      const dt = (now - previous) / 1000;
+      const dt = Math.min(0.1, (now - previous) / 1000);
       previous = now;
-      setTimeH((current) => {
-        const next = current + dt * (DURATION_H / 18);
-        if (next >= DURATION_H) {
-          setPlaying(false);
-          return DURATION_H;
-        }
-        return next;
-      });
+      const { timeH, speed, setTime, setPlaying } = useStore.getState();
+      const next = timeH + dt * HOURS_PER_SECOND * speed;
+      if (next >= DURATION_H) {
+        setTime(DURATION_H);
+        setPlaying(false);
+        return;
+      }
+      setTime(next);
       frame = requestAnimationFrame(step);
     };
     frame = requestAnimationFrame(step);
     return () => cancelAnimationFrame(frame);
   }, [playing]);
+}
 
-  const focus = result?.runs[0];
-  const focusSample = focus ? sampleAt(focus.samples, timeH) : null;
-  const phaseCopy = encyclopedia?.phases.find((phase) => phase.id === focusSample?.phase);
-  const activeModelId = pinnedModel ?? (focusSample ? modelForPhase(focusSample.phase) : "hydrothermal");
-  const model = encyclopedia?.models.find((card) => card.id === activeModelId);
-  const sentence = physics
-    ? (focus?.narrative.physics ?? "The dose is hydrothermal time.")
-    : speciesIds.length > 1
-      ? (result?.comparison ?? focus?.narrative.plain)
-      : focus?.narrative.plain;
+function useShortcuts() {
+  useEffect(() => {
+    const onKey = (event: KeyboardEvent) => {
+      const target = event.target as HTMLElement | null;
+      if (event.metaKey || event.ctrlKey || event.altKey) return;
+      if (target?.closest("input, textarea") || target?.isContentEditable) return;
+      if (event.key === " " && target?.closest("button, [role=tab], summary")) return;
+      const state = useStore.getState();
+      if (event.key === " ") {
+        event.preventDefault();
+        state.togglePlay();
+        return;
+      }
+      const view = VIEW_SHORTCUTS[event.key.toLowerCase()];
+      if (view) state.toggleView(view);
+      if (event.key === "1") state.setCamera("overview");
+      if (event.key === "2") state.setCamera("section");
+      if (event.key === "3") state.setCamera("seed");
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
+}
 
-  function chooseSpecies(id: string) {
-    setSpeciesIds([id]);
-    setManualId(id);
-    setTimeH(0);
-    setPlaying(true);
-  }
+export function App() {
+  usePlayback();
+  useShortcuts();
+  const visible = useStore((s) => s.visible);
+  const focusId = useStore((s) => s.focusId);
+  const temperature = useStore((s) => s.temperature);
+  const dryness = useStore((s) => s.dryness);
+  const timeH = useStore((s) => s.timeH);
+
+  const { result, error } = useSimulation({
+    species_ids: visible,
+    temperature_c: temperature,
+    water_potential_mpa: -dryness,
+    duration_h: DURATION_H,
+    n_points: N_POINTS,
+  });
+  const encyclopedia = useEncyclopedia();
+  const detail = useSpeciesDetail(focusId);
+
+  const lastGood = useRef<SimulationResult | null>(null);
+  if (result) lastGood.current = result;
+  const shown = result ?? lastGood.current;
+  const runs = useMemo(() => shown?.runs.filter((run) => visible.includes(run.species_id)) ?? [], [shown, visible]);
+  const accents = useMemo(() => Object.fromEntries((shown?.runs ?? []).map((run) => [run.species_id, run.display.accent])), [shown]);
+  const focusRun = runs.find((run) => run.species_id === focusId) ?? runs[0] ?? null;
+  const focusSample = focusRun ? sampleAt(focusRun.samples, timeH) : null;
 
   return (
-    <main>
-      <header className="top">
-        <div>
-          <p className="brand">Radicle</p>
-          <p className="support">From a dry seed to the first root.</p>
-        </div>
-        <nav className="species" aria-label="Species">
-          {SPECIES.map((species) => (
-            <button
-              key={species.id}
-              type="button"
-              aria-pressed={speciesIds.length === 1 && speciesIds[0] === species.id}
-              onClick={() => chooseSpecies(species.id)}
-            >
-              {species.label}
-            </button>
-          ))}
-          <button
-            type="button"
-            aria-pressed={speciesIds.length === 3}
-            onClick={() => {
-              setSpeciesIds(SPECIES.map((species) => species.id));
-              setTimeH(0);
-              setPlaying(true);
-            }}
-          >
-            All three
-          </button>
-        </nav>
-      </header>
-
-      {result ? (
-        <Stage
-          runs={result.runs}
-          timeH={timeH}
-          durationH={DURATION_H}
-          onScrub={(next) => {
-            setPlaying(false);
-            setTimeH(next);
-          }}
-        />
-      ) : (
-        <p className="waiting">{error ?? "Computing the dose…"}</p>
-      )}
-
-      <p className="now">{sentence}</p>
-      {focusSample && (
-        <p className="meters">
-          {phaseCopy?.title ?? focusSample.phase} · moisture {(focusSample.moisture * 100).toFixed(0)}% ·
-          respiration {focusSample.respiration_index.toFixed(2)}× · {timeH.toFixed(0)} h
-        </p>
-      )}
-      {error && result && <p className="error">{error}</p>}
-
-      <div className="controls">
-        <label>
-          <span>
-            Temperature <strong>{temperature.toFixed(1)}°C</strong>
-          </span>
-          <input
-            type="range"
-            min={2}
-            max={40}
-            step={0.5}
-            value={temperature}
-            aria-valuetext={`${temperature} degrees Celsius`}
-            onChange={(event) => {
-              setTemperature(Number(event.target.value));
-              setTimeH(0);
-              setPlaying(true);
-            }}
-          />
-        </label>
-        <label>
-          <span>
-            Soil water <strong>{soilWords(waterPotential)}</strong>
-            <em>{signedMpa(waterPotential)}</em>
-          </span>
-          <input
-            type="range"
-            min={0}
-            max={1.8}
-            step={0.01}
-            value={dryness}
-            aria-valuetext={`${signedMpa(waterPotential)}, ${soilWords(waterPotential)}`}
-            onChange={(event) => {
-              setDryness(Number(event.target.value));
-              setTimeH(0);
-              setPlaying(true);
-            }}
-          />
-        </label>
-        <div className="actions">
-          <button type="button" onClick={() => setPlaying((value) => !value)}>
-            {playing ? "Pause" : "Play the hours"}
-          </button>
-          <button type="button" aria-pressed={physics} onClick={() => setPhysics((value) => !value)}>
-            {physics ? "Plain language" : "Show the dose"}
-          </button>
-        </div>
-      </div>
-
-      <section className="manual">
-        <h2>How this step is modelled</h2>
-        <p className="support">
-          {physics ? (phaseCopy?.physics ?? model?.physics) : (phaseCopy?.plain ?? model?.plain)}
-        </p>
-        <div className="manual-nav">
-          {MODELS.map((item) => (
-            <button
-              key={item.id}
-              type="button"
-              aria-pressed={activeModelId === item.id}
-              onClick={() => setPinnedModel(item.id)}
-            >
-              {item.label}
-            </button>
-          ))}
-        </div>
-        {model && (
-          <>
-            <p className="equation">{model.equation}</p>
-            <p>{model.equation_note}</p>
-            <p className="citation">
-              {model.name}, {model.year}. {model.developed_from}
-            </p>
-            <h3>What the model assumes</h3>
-            <ul>
-              {model.assumptions.map((item) => (
-                <li key={item}>{item}</li>
-              ))}
-            </ul>
-            <h3>Where it is weak</h3>
-            <ul>
-              {model.limitations.map((item) => (
-                <li key={item}>{item}</li>
-              ))}
-            </ul>
-          </>
-        )}
-        {detail && (
-          <>
-            <h3>
-              {detail.common_name} <em>{detail.scientific_name}</em>
-            </h3>
-            <p>{detail.summary}</p>
-            <p>{detail.reserves}</p>
-            <p>{detail.dormancy_note}</p>
-            {speciesIds.length > 1 && (
-              <div className="manual-nav">
-                {SPECIES.map((species) => (
-                  <button
-                    key={species.id}
-                    type="button"
-                    aria-pressed={manualId === species.id}
-                    onClick={() => setManualId(species.id)}
-                  >
-                    {species.label} numbers
-                  </button>
-                ))}
+    <Tooltip.Provider delayDuration={350} skipDelayDuration={150}>
+      <main className="canvas-backdrop relative h-full w-full overflow-hidden">
+        <div className="absolute inset-0">
+          <ErrorBoundary
+            fallback={(failure) => (
+              <div className="grid h-full place-items-center">
+                <p className="max-w-md text-center font-mono text-[11px] text-warn" data-testid="scene-error" title={failure.stack}>
+                  The 3D view failed: {failure.message}
+                </p>
               </div>
             )}
-            <h3>The numbers, and how much to trust them</h3>
-            <dl className="params">
-              {detail.provenance
-                .filter((item) => item.parameter.startsWith("germination."))
-                .map((item) => (
-                  <div key={item.parameter}>
-                    <dt>
-                      {labelFor(item.parameter)}{" "}
-                      <strong>{formatParam(item.parameter, detail.germination)}</strong>
-                      <em>{item.confidence}</em>
-                    </dt>
-                    <dd>
-                      {item.source} {item.note}
-                    </dd>
-                  </div>
-                ))}
-            </dl>
-          </>
+          >
+            {runs.length > 0 && <Scene runs={runs} />}
+          </ErrorBoundary>
+        </div>
+        <CalloutOverlay />
+
+        <header className="pointer-events-none absolute top-3 left-3 z-30 flex h-10 items-center gap-2.5 px-1">
+          <Logo />
+          <div className="leading-tight">
+            <p className="text-[12.5px] font-semibold tracking-[-0.01em] text-fg">Radicle</p>
+            <p className="text-[10.5px] text-fg-subtle">Seed to seedling · 7 days</p>
+          </div>
+        </header>
+
+        <div className="absolute top-3 left-1/2 z-30 -translate-x-1/2">
+          <Toolbar />
+        </div>
+
+        <aside className="absolute top-16 left-3 z-30">
+          <ControlPanel detail={detail} accents={accents} />
+        </aside>
+
+        <aside className="absolute top-3 right-3 bottom-3 z-30 flex flex-col items-end">
+          <Inspector
+            run={focusRun}
+            sample={focusSample}
+            comparison={runs.length > 1 ? (shown?.comparison ?? null) : null}
+            encyclopedia={encyclopedia}
+            detail={detail}
+          />
+        </aside>
+
+        {runs.length > 0 && (
+          <section className="absolute bottom-3 left-1/2 z-30 w-[min(640px,calc(100vw-720px))] min-w-[440px] -translate-x-1/2">
+            <Timeline runs={runs} />
+          </section>
         )}
-        {focus && <p className="limit">{focus.narrative.limit}</p>}
-      </section>
-    </main>
+
+        {!shown && (
+          <div className="absolute inset-0 grid place-items-center">
+            <p className="font-mono text-[11px] text-fg-subtle">{error ?? "Connecting to the simulator…"}</p>
+          </div>
+        )}
+        {error && shown && (
+          <div className="panel absolute bottom-3 left-3 z-30 max-w-[252px] px-3 py-2 text-[11px] text-warn">{error}</div>
+        )}
+      </main>
+    </Tooltip.Provider>
   );
 }
 
-function labelFor(parameter: string): string {
-  const names: Record<string, string> = {
-    "germination.tb_c": "Base temperature",
-    "germination.to_c": "Optimum",
-    "germination.tc_c": "Ceiling",
-    "germination.theta_htt_mpa_c_h": "Hydrothermal dose θ",
-    "germination.psi_b50_mpa": "Median base water potential",
-    "germination.sigma_psi_b_mpa": "Spread of that threshold",
-    "germination.k_t_mpa_per_c": "Heat slope of the threshold",
-  };
-  return names[parameter] ?? parameter;
-}
-
-function formatParam(parameter: string, germination: Record<string, number>): string {
-  const key = parameter.split(".")[1];
-  const value = germination[key];
-  if (value === undefined) return "";
-  if (parameter.endsWith("_c")) return `${value.toFixed(0)}°C`;
-  if (parameter.includes("theta")) return `${value.toFixed(0)} MPa·°C·h`;
-  if (parameter.includes("k_t")) return `${value.toFixed(3)} MPa/°C`;
-  if (parameter.includes("sigma") || parameter.includes("psi")) return `${value.toFixed(3)} MPa`;
-  return String(value);
+function Logo() {
+  return (
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden>
+      <rect x="0.5" y="0.5" width="23" height="23" rx="6.5" fill="#151918" stroke="rgb(255 255 255 / 0.12)" />
+      <path d="M12 12.5c0 3 .4 5.5 1.6 7.5" stroke="#efe6cf" strokeWidth="1.5" strokeLinecap="round" />
+      <path d="M12 12.5V8.2" stroke="#8fd16a" strokeWidth="1.5" strokeLinecap="round" />
+      <path d="M12 8.4c-1.8-.2-3.3-1.2-3.8-3 1.9-.1 3.4.9 3.8 3Zm0 0c1.8-.2 3.3-1.2 3.8-3-1.9-.1-3.4.9-3.8 3Z" fill="#8fd16a" />
+      <ellipse cx="12.4" cy="13" rx="2.2" ry="1.5" fill="#8a5a34" />
+    </svg>
+  );
 }
