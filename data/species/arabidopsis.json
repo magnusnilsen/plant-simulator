@@ -10,7 +10,7 @@
     "tb_c": 3.0,
     "to_c": 22.0,
     "tc_c": 34.0,
-    "theta_htt_mpa_c_h": 412.2,
+    "theta_htt_mpa_c_h": 412.224,
     "psi_b50_mpa": -1.272,
     "sigma_psi_b_mpa": 0.222,
     "k_t_mpa_per_c": 0.14
@@ -60,7 +60,7 @@
     {
       "parameter": "germination.theta_htt_mpa_c_h",
       "confidence": "medium",
-      "source": "Footitt et al. 2019 fitted a hydrotime constant θH = 34.352 MPa·h for non-dormant Col-0 at 15°C. Converted with θHTT = θH × (T − Tb) at that temperature, using Tb = 3°C, which gives 412.2 MPa·°C·h.",
+      "source": "Footitt et al. 2019 fitted a hydrotime constant θH = 34.352 MPa·h for non-dormant Col-0 at 15°C. Converted with θHTT = θH × (T − Tb) at that temperature, using Tb = 3°C, which gives 412.224 MPa·°C·h.",
       "year": 2019,
       "note": "The conversion assumes base temperature stays 3°C and θHTT is constant on the way up to the optimum. Median time on free water is then 27 hours at 15°C (the measured hydrotime) and about 17 hours at 22°C."
     },
