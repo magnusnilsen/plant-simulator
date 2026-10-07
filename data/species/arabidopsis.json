@@ -1,0 +1,179 @@
+{
+  "id": "arabidopsis",
+  "scientific_name": "Arabidopsis thaliana",
+  "common_name": "Thale cress",
+  "family": "Brassicaceae",
+  "summary": "A small weed that became the laboratory mouse of plant biology. The genome was published in 2000, so the molecular story is richer here than for any vegetable. This pack is Arabidopsis thaliana ecotype Col-0 after a cold treatment that has removed primary dormancy, which is the state used in the hydrotime measurements below. It is not a garden crop. Compare it with radish, a cousin you can eat.",
+  "reserves": "The seed is tiny and oil-rich. Most of the stored energy is triacylglycerol (plant oil) packed in oil bodies, plus a smaller store of seed-storage protein. At germination those oils are broken down to feed the embryo until the cotyledons turn green.",
+  "dormancy_note": "Wild Arabidopsis is often dormant: it will not germinate even when wet and warm, until time, cold, or light has passed. This pack is a non-dormant lot, the kind used in a lab after after-ripening. Dormancy is not simulated as its own hormone circuit yet. It would appear as a higher (less negative) base water potential.",
+  "germination": {
+    "tb_c": 3.0,
+    "to_c": 22.0,
+    "tc_c": 34.0,
+    "theta_htt_mpa_c_h": 412.2,
+    "psi_b50_mpa": -1.272,
+    "sigma_psi_b_mpa": 0.222,
+    "k_t_mpa_per_c": 0.14
+  },
+  "imbibition": {
+    "m_initial": 0.08,
+    "tau_h": 1.2,
+    "q10": 1.7,
+    "h_metabolism": 0.35,
+    "psi_floor_mpa": -2.0
+  },
+  "seedling": {
+    "root_mm_per_degree_h": 0.008,
+    "hypocotyl_mm_per_degree_h": 0.007,
+    "psi_min_mpa": -1.2,
+    "respiration_q10": 2.0
+  },
+  "display": {
+    "root_span_mm": 12.0,
+    "hypocotyl_span_mm": 10.0,
+    "coat": "#b7a27a",
+    "embryo": "#6e8f55",
+    "accent": "#c5d56a"
+  },
+  "provenance": [
+    {
+      "parameter": "germination.tb_c",
+      "confidence": "medium",
+      "source": "Non-dormant Arabidopsis germinates, slowly, a few degrees above freezing. Three degrees is a working base for a lab lot, not a fitted threshold from one paper.",
+      "year": 2011,
+      "note": "Below Tb the hydrothermal clock is stopped. Real accessions differ, especially when dormant."
+    },
+    {
+      "parameter": "germination.to_c",
+      "confidence": "medium",
+      "source": "22°C is the standard Arabidopsis growth-room temperature and close to the germination optimum used for Col-0 in lab practice.",
+      "year": 2000,
+      "note": "Optimum is a property of the seed lot and the light environment, not a species constant."
+    },
+    {
+      "parameter": "germination.tc_c",
+      "confidence": "low",
+      "source": "Germination of non-dormant Arabidopsis collapses in the low thirties. 34°C is a hard ceiling placed just above that collapse.",
+      "year": 1994,
+      "note": "The interesting heat effect is the rise in base water potential below Tc, not the ceiling itself."
+    },
+    {
+      "parameter": "germination.theta_htt_mpa_c_h",
+      "confidence": "medium",
+      "source": "Footitt et al. 2019 fitted a hydrotime constant θH = 34.352 MPa·h for non-dormant Col-0 at 15°C. Converted with θHTT = θH × (T − Tb) at that temperature, using Tb = 3°C, which gives 412.2 MPa·°C·h.",
+      "year": 2019,
+      "note": "The conversion assumes base temperature stays 3°C and θHTT is constant on the way up to the optimum. Median time on free water is then 27 hours at 15°C (the measured hydrotime) and about 17 hours at 22°C."
+    },
+    {
+      "parameter": "germination.psi_b50_mpa",
+      "confidence": "high",
+      "source": "Footitt et al. 2019, Table 1: mean base water potential of non-dormant Col-0 is −1.272 MPa. Seeds had 3 days at 5°C in the dark, then up to 28 days at 15°C in the light on PEG solutions from 0 to −1.3 MPa.",
+      "year": 2019,
+      "note": "A dormant seed is a different object. Footitt et al. 2013 found buried Bur seed moving between about −1.0 MPa (least dormant) and positive values when deeply dormant. This pack does not include that cycle."
+    },
+    {
+      "parameter": "germination.sigma_psi_b_mpa",
+      "confidence": "high",
+      "source": "Footitt et al. 2019, Table 1: σψb = 0.222 MPa for the same non-dormant Col-0 hydrotime fit.",
+      "year": 2019,
+      "note": "This is a uniform laboratory lot. A packet of mixed wild seed would be wider."
+    },
+    {
+      "parameter": "germination.k_t_mpa_per_c",
+      "confidence": "low",
+      "source": "The upward shift of base water potential above the optimum is the Alvarado & Bradford 2002 account of thermoinhibition. Footitt et al. 2019 still saw high germination of cold-treated Col-0 at 20°C and a clearer heat penalty by 25°C only in mutants and in seed that had not had dormancy removed. The slope 0.14 MPa/°C keeps this non-dormant lot healthy at 25°C and cuts it back through the low thirties.",
+      "year": 2002,
+      "note": "Not fitted to a full temperature-by-water-potential matrix. Heat sensitivity would be stronger in freshly shed, dormant seed."
+    },
+    {
+      "parameter": "imbibition.m_initial",
+      "confidence": "medium",
+      "source": "Air-dry orthodox seeds are typically near 5–10% water on a fresh-weight basis (Bewley, Bradford, Hilhorst & Nonogaki 2013).",
+      "year": 2013,
+      "note": "Shown as a relative water content from 0 to 1, not a laboratory moisture percentage."
+    },
+    {
+      "parameter": "imbibition.tau_h",
+      "confidence": "illustrative",
+      "source": "Arabidopsis seeds are tiny, so the physical wetting (phase I) is over in a few hours. The time constant is an order-of-magnitude sketch, not a measured diffusion coefficient.",
+      "year": 1997,
+      "note": "Phase I is mostly physics: water moving into a dry porous seed. Metabolism is not required."
+    },
+    {
+      "parameter": "imbibition.q10",
+      "confidence": "illustrative",
+      "source": "Warm water is less viscous and wets a seed faster. A Q10 of 1.7 is a mild physical temperature response, weaker than biochemical respiration.",
+      "year": 2003,
+      "note": "Q10 means the rate multiplies by this factor for every 10°C of warming, a local stand-in for an Arrhenius curve."
+    },
+    {
+      "parameter": "imbibition.h_metabolism",
+      "confidence": "illustrative",
+      "source": "Metabolism stays off until liquid water is available to enzymes. The threshold is a teaching cutoff, aligned so it sits inside the water potentials where hydrothermal time still allows germination.",
+      "year": 1997,
+      "note": "This is not a measured water content for the resumption of respiration."
+    },
+    {
+      "parameter": "imbibition.psi_floor_mpa",
+      "confidence": "illustrative",
+      "source": "Equilibrium hydration is drawn as a straight line from free water (0 MPa) down to no available water at −2 MPa, just past the classic permanent wilting point of −1.5 MPa.",
+      "year": 2013,
+      "note": "A real moisture isotherm is curved. The line is here so you can see the idea."
+    },
+    {
+      "parameter": "seedling.root_mm_per_degree_h",
+      "confidence": "illustrative",
+      "source": "Early Arabidopsis roots elongate a few millimetres per day near 22°C. The coefficient is chosen to land near that scale.",
+      "year": 2026,
+      "note": "Elongation is a thermal-time sketch. It is not a cell-expansion model (Lockhart 1965) and not fitted to a growth curve."
+    },
+    {
+      "parameter": "seedling.hypocotyl_mm_per_degree_h",
+      "confidence": "illustrative",
+      "source": "The hypocotyl is the embryonic stem. In Arabidopsis it stays short compared with a lettuce seedling. The coefficient is a visual and order-of-magnitude match only.",
+      "year": 2026,
+      "note": "Light would shorten the hypocotyl in reality. Light is not a variable yet."
+    },
+    {
+      "parameter": "seedling.psi_min_mpa",
+      "confidence": "illustrative",
+      "source": "Seedling expansion stalls in dry media before the driest possible germination. −1.2 MPa is a soft stop for growth.",
+      "year": 1965,
+      "note": "Real expansion depends on turgor above a yield threshold. We use a linear water multiplier instead."
+    },
+    {
+      "parameter": "seedling.respiration_q10",
+      "confidence": "medium",
+      "source": "Plant respiration often roughly doubles for a 10°C rise near room temperature (Atkin & Tjoelker 2003). The index uses Q10 = 2.",
+      "year": 2003,
+      "note": "This is a relative index, not a flux in micromoles of CO2. We do not simulate mitochondria, ATP, or sugar concentrations."
+    }
+  ],
+  "references": [
+    {
+      "id": "arabidopsis-genome-2000",
+      "citation": "The Arabidopsis Genome Initiative. Analysis of the genome sequence of the flowering plant Arabidopsis thaliana. Nature 408:796–815.",
+      "year": 2000
+    },
+    {
+      "id": "footitt-2019",
+      "citation": "Footitt S, Clewes R, Feeney M, Finch-Savage WE, Frigerio L. Aquaporins influence seed dormancy and germination in response to stress. Plant, Cell & Environment 42:2325–2339. https://doi.org/10.1111/pce.13561. Table 1: Col-0 ψb = −1.272 MPa, σψb = 0.222 MPa, θH = 34.352 MPa·h at 15°C after 3 days at 5°C.",
+      "year": 2019
+    },
+    {
+      "id": "footitt-2013",
+      "citation": "Footitt S, Huang Z, Clay HA, Mead A, Finch-Savage WE. Temperature, light and nitrate sensing coordinate Arabidopsis seed dormancy cycling, resulting in winter and summer annual phenotypes. The Plant Journal 74:1003–1015. Shows dormancy moving base water potential by a megapascal or more.",
+      "year": 2013
+    },
+    {
+      "id": "alvarado-bradford-2002",
+      "citation": "Alvarado V, Bradford KJ. A hydrothermal time model explains the cardinal temperatures for seed germination. Plant, Cell & Environment 25:1061–1069.",
+      "year": 2002
+    },
+    {
+      "id": "bewley-2013",
+      "citation": "Bewley JD, Bradford KJ, Hilhorst HWM, Nonogaki H. Seeds: Physiology of Development, Germination and Dormancy. 3rd ed. Springer.",
+      "year": 2013
+    }
+  ]
+}

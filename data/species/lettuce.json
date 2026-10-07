@@ -1,0 +1,174 @@
+{
+  "id": "lettuce",
+  "scientific_name": "Lactuca sativa",
+  "common_name": "Lettuce",
+  "family": "Asteraceae",
+  "summary": "The species to watch when the weather turns hot. A moist paper towel in a warm room can still fail, because lettuce seeds become more reluctant to take up water as temperature rises. That failure mode is called thermoinhibition. This pack behaves like a heat-sensitive butterhead or classic Empire-type lot, not like every modern heat-tolerant variety.",
+  "reserves": "Lettuce seed stores oil and protein. On wetting, respiration restarts and the embryo must weaken the endosperm cap before the radicle can push through. Bradford's work showed that the wait is mostly that weakening, not a slow build-up of extra pressure inside the embryo.",
+  "dormancy_note": "Lettuce germination is also pushed by light (phytochrome) and can be deepened by warm dry storage. Neither light nor dormancy state is a control in this version. Assume a non-dormant seed in the light, which is the usual sowing condition on a windowsill.",
+  "germination": {
+    "tb_c": 2.0,
+    "to_c": 20.0,
+    "tc_c": 33.0,
+    "theta_htt_mpa_c_h": 504.0,
+    "psi_b50_mpa": -1.0,
+    "sigma_psi_b_mpa": 0.25,
+    "k_t_mpa_per_c": 0.15
+  },
+  "imbibition": {
+    "m_initial": 0.08,
+    "tau_h": 2.5,
+    "q10": 1.7,
+    "h_metabolism": 0.35,
+    "psi_floor_mpa": -2.0
+  },
+  "seedling": {
+    "root_mm_per_degree_h": 0.022,
+    "hypocotyl_mm_per_degree_h": 0.028,
+    "psi_min_mpa": -1.1,
+    "respiration_q10": 2.0
+  },
+  "display": {
+    "root_span_mm": 28.0,
+    "hypocotyl_span_mm": 32.0,
+    "coat": "#5f7d62",
+    "embryo": "#d5e2bc",
+    "accent": "#8eaf6a"
+  },
+  "provenance": [
+    {
+      "parameter": "germination.tb_c",
+      "confidence": "medium",
+      "source": "Lettuce germinates in cool soil. A base near 2°C matches the cool end of horticultural sowing advice (soil from about 5°C upward, very slow at the bottom of that range).",
+      "year": 1990,
+      "note": "Tb is where the thermal clock stops, which is colder than the temperature you would choose to sow."
+    },
+    {
+      "parameter": "germination.to_c",
+      "confidence": "high",
+      "source": "Germination tests and growers both centre lettuce near 20°C. Above the mid-twenties many cultivars slow or stop. Bradford's hydrotime work on cv. Empire was done in this regime.",
+      "year": 1990,
+      "note": "At To the sub-optimal and supra-optimal formulas meet, so the rate does not jump when you cross the optimum."
+    },
+    {
+      "parameter": "germination.tc_c",
+      "confidence": "medium",
+      "source": "A hard ceiling at 33°C sits above the temperatures where thermoinhibition has already removed most of a heat-sensitive lot.",
+      "year": 1994,
+      "note": "If germination has already failed at 30°C, the precise ceiling barely matters."
+    },
+    {
+      "parameter": "germination.theta_htt_mpa_c_h",
+      "confidence": "low",
+      "source": "Set so median emergence on free water at 20°C is 28 hours. Intact lettuce in Bradford's experiments germinates on that kind of timescale once the endosperm cap weakens; it is not his published θH copied verbatim.",
+      "year": 1990,
+      "note": "Bradford 1990 reported a hydrotime description (θH, ψb(50), σ) at a given temperature. Combining it with temperature into θHTT needs extra assumptions, which is what kT and the cardinal temperatures are doing here."
+    },
+    {
+      "parameter": "germination.psi_b50_mpa",
+      "confidence": "medium",
+      "source": "At moderate temperature, lettuce base water potentials in the Bradford papers sit well below 0 MPa, so a moist medium germinates the whole lot. −1.0 MPa is inside that picture for a non-dormant seed at the optimum.",
+      "year": 1990,
+      "note": "The number moves up (germination gets harder) as temperature rises. That movement is kT, not a change of this parameter."
+    },
+    {
+      "parameter": "germination.sigma_psi_b_mpa",
+      "confidence": "illustrative",
+      "source": "A quarter of a megapascal of spread gives a cohort: some seeds emerge early, some late, and a dry medium cuts off the sensitive tail. The width is typical of published fits rather than a re-fit of Empire lettuce.",
+      "year": 1990,
+      "note": "Individual seeds are not tracked. The curve is the cumulative normal distribution of their thresholds."
+    },
+    {
+      "parameter": "germination.k_t_mpa_per_c",
+      "confidence": "medium",
+      "source": "Bradford & Somasco 1994 and Dutta & Bradford 1994 showed that thermoinhibition is a rise in ψb(g) with temperature. The slope 0.15 MPa/°C makes this lot mostly fine at 24°C, about half-failed at 27°C, and almost stopped at 30°C on free water.",
+      "year": 1994,
+      "note": "This is the parameter to drag if you want to feel heat. Cultivars bred for hot weather would need a smaller slope."
+    },
+    {
+      "parameter": "imbibition.m_initial",
+      "confidence": "medium",
+      "source": "Air-dry orthodox seeds sit near 5–10% moisture (Bewley et al. 2013).",
+      "year": 2013,
+      "note": "Relative water content in the model, not a gravimetric lab measurement."
+    },
+    {
+      "parameter": "imbibition.tau_h",
+      "confidence": "illustrative",
+      "source": "Lettuce seed is small. Physical imbibition is largely finished within several hours, well before radicle emergence. The time constant is chosen so phase I ends early in the hydrothermal wait.",
+      "year": 1997,
+      "note": "Emergence time still comes from hydrothermal time. Moisture is a parallel explanation, not a second clock."
+    },
+    {
+      "parameter": "imbibition.q10",
+      "confidence": "illustrative",
+      "source": "A mild Q10 for a physical wetting process.",
+      "year": 2003,
+      "note": "Warmer water enters faster. That is separate from the biological refusal to germinate when it is too hot."
+    },
+    {
+      "parameter": "imbibition.h_metabolism",
+      "confidence": "illustrative",
+      "source": "Enzymes need liquid water. The cutoff is a teaching threshold placed so moist and moderately dry soils can activate, while a soil near wilting cannot.",
+      "year": 1997,
+      "note": "Not a measured critical water content for lettuce respiration."
+    },
+    {
+      "parameter": "imbibition.psi_floor_mpa",
+      "confidence": "illustrative",
+      "source": "Linear hydration from 0 MPa down to none at −2 MPa.",
+      "year": 2013,
+      "note": "Real seed moisture isotherms are nonlinear."
+    },
+    {
+      "parameter": "seedling.root_mm_per_degree_h",
+      "confidence": "illustrative",
+      "source": "Gives roughly a centimetre of root per day near 20°C. Early lettuce radicles are on that scale.",
+      "year": 2026,
+      "note": "Thermal-time elongation only. No soil mechanical resistance."
+    },
+    {
+      "parameter": "seedling.hypocotyl_mm_per_degree_h",
+      "confidence": "illustrative",
+      "source": "Lettuce lifts its cotyledons on a long hypocotyl. The coefficient is a bit higher than the root so the picture matches what you see in a tray.",
+      "year": 2026,
+      "note": "In bright light the hypocotyl would stay shorter. Light is not modelled."
+    },
+    {
+      "parameter": "seedling.psi_min_mpa",
+      "confidence": "illustrative",
+      "source": "Expansion fades out approaching −1.1 MPa.",
+      "year": 1965,
+      "note": "A linear stand-in for turgor-driven growth."
+    },
+    {
+      "parameter": "seedling.respiration_q10",
+      "confidence": "medium",
+      "source": "Q10 ≈ 2 for plant respiration near room temperature (Atkin & Tjoelker 2003).",
+      "year": 2003,
+      "note": "Relative index only. No CO2 flux is computed."
+    }
+  ],
+  "references": [
+    {
+      "id": "bradford-1990",
+      "citation": "Bradford KJ. A water relations analysis of seed germination rates. Plant Physiology 94:840–849. Lettuce cv. Empire; hydrotime constant and the distribution of base water potential.",
+      "year": 1990
+    },
+    {
+      "id": "bradford-somasco-1994",
+      "citation": "Bradford KJ, Somasco OA. Water relations of lettuce seed thermoinhibition. I. Priming and endosperm effects on base water potential. Seed Science Research 4:1–10.",
+      "year": 1994
+    },
+    {
+      "id": "dutta-bradford-1994",
+      "citation": "Dutta S, Bradford KJ. Water relations of lettuce seed thermoinhibition. II. Ethylene and endosperm effects on base water potential. Seed Science Research 4:11–18.",
+      "year": 1994
+    },
+    {
+      "id": "alvarado-bradford-2002",
+      "citation": "Alvarado V, Bradford KJ. A hydrothermal time model explains the cardinal temperatures for seed germination. Plant, Cell & Environment 25:1061–1069.",
+      "year": 2002
+    }
+  ]
+}

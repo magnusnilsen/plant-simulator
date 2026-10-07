@@ -1,0 +1,174 @@
+{
+  "id": "radish",
+  "scientific_name": "Raphanus sativus",
+  "common_name": "Garden radish",
+  "family": "Brassicaceae",
+  "summary": "A fast kitchen-garden crop in the same family as Arabidopsis. Sow it cool and moist and the radicle is out in about two days. This pack is a non-dormant garden lot. It is deliberately not the hydrothermal fit of Khan et al. 2022: that fit set the base temperature equal to the coldest treatment they tried (15°C) and does not behave like radish in a spring bed. Both are in the program so you can see the difference.",
+  "reserves": "Radish seed is an oil seed, like other brassicas. The stored triacylglycerols are the fuel for the first days, until the green cotyledons take over. The chemistry is the same idea as Arabidopsis, in a seed roughly a thousand times heavier.",
+  "dormancy_note": "Fresh radish seed can be slightly dormant, but packet seed sold for the garden is usually ready. This pack assumes that. Salt stress and soil crusting are not included; a hard surface can block a radicle that the hydrothermal clock says is ready.",
+  "germination": {
+    "tb_c": 4.0,
+    "to_c": 24.0,
+    "tc_c": 38.0,
+    "theta_htt_mpa_c_h": 653.0,
+    "psi_b50_mpa": -0.85,
+    "sigma_psi_b_mpa": 0.3,
+    "k_t_mpa_per_c": 0.08
+  },
+  "imbibition": {
+    "m_initial": 0.08,
+    "tau_h": 5.0,
+    "q10": 1.7,
+    "h_metabolism": 0.35,
+    "psi_floor_mpa": -2.0
+  },
+  "seedling": {
+    "root_mm_per_degree_h": 0.035,
+    "hypocotyl_mm_per_degree_h": 0.02,
+    "psi_min_mpa": -1.0,
+    "respiration_q10": 2.0
+  },
+  "display": {
+    "root_span_mm": 40.0,
+    "hypocotyl_span_mm": 24.0,
+    "coat": "#7a4036",
+    "embryo": "#e4d2a8",
+    "accent": "#d7a15a"
+  },
+  "provenance": [
+    {
+      "parameter": "germination.tb_c",
+      "confidence": "medium",
+      "source": "Garden radish is sown from about 4°C soil upward. Khan, Ullah, Shah et al. 2022 reported Tb = 15°C, but that was the lowest temperature in their incubator trial and their hydrothermal fit had R² = 0.53.",
+      "year": 2022,
+      "note": "Using 15°C as Tb would tell you a spring sowing at 12°C never starts. That contradicts ordinary radish. The published fit is kept as a separate validation case."
+    },
+    {
+      "parameter": "germination.to_c",
+      "confidence": "medium",
+      "source": "Radish germinates readily through the low twenties. 24°C is a working optimum above lettuce and in the range growers treat as warm but safe.",
+      "year": 2022,
+      "note": "Khan et al. reported To = 20°C for their lot. This garden pack is a little warmer, and more heat-tolerant via a smaller kT."
+    },
+    {
+      "parameter": "germination.tc_c",
+      "confidence": "low",
+      "source": "Germination becomes poor approaching 35–40°C. The ceiling is 38°C.",
+      "year": 2022,
+      "note": "Khan et al. used Tc = 40°C. Their seeds also germinated poorly for reasons other than the ceiling (final germination in the paper stays near 40% even in mild conditions)."
+    },
+    {
+      "parameter": "germination.theta_htt_mpa_c_h",
+      "confidence": "low",
+      "source": "Chosen so median emergence at 20°C on free water is 48 hours. Seed testing expects a radish germination count to be underway within a few days, not three weeks.",
+      "year": 2026,
+      "note": "Khan et al. Table 3 gives θHTT = 1008 MPa·°C·h with Tb = 15°C, which predicts a median near 20 days at 20°C. That describes their slow, low-vigour result, not packet seed. See data/validation."
+    },
+    {
+      "parameter": "germination.psi_b50_mpa",
+      "confidence": "low",
+      "source": "−0.85 MPa lets a moist to slightly dry medium germinate essentially the whole lot, and starts cutting the lot once water potential falls past roughly −0.5 MPa. Khan et al. Table 3 reported −0.41 MPa for their fit.",
+      "year": 2022,
+      "note": "More negative means the seed can germinate in drier soil. This garden lot is more drought-tolerant at germination than the Khan fit."
+    },
+    {
+      "parameter": "germination.sigma_psi_b_mpa",
+      "confidence": "illustrative",
+      "source": "0.30 MPa of spread. Khan et al. Table 3 reported 0.57 MPa. A wider distribution is a less uniform packet.",
+      "year": 2002,
+      "note": "The curve you see is a population, not one heroic seed."
+    },
+    {
+      "parameter": "germination.k_t_mpa_per_c",
+      "confidence": "low",
+      "source": "A shallow heat slope so radish keeps germinating past the point where lettuce has stopped. Khan et al. reported kT = 0.104 MPa/°C (their table labels the unit incorrectly as MPa·°C·h).",
+      "year": 2022,
+      "note": "Mechanism from Alvarado & Bradford 2002: above To, ψb shifts up and the driving force shrinks."
+    },
+    {
+      "parameter": "imbibition.m_initial",
+      "confidence": "medium",
+      "source": "Air-dry orthodox seed, about 8% relative water (Bewley et al. 2013).",
+      "year": 2013,
+      "note": "Radish seed coats are thicker than Arabidopsis, which is reflected in the longer wetting time, not in this starting moisture."
+    },
+    {
+      "parameter": "imbibition.tau_h",
+      "confidence": "illustrative",
+      "source": "A larger seed takes longer to wet. Five hours is a sketch of phase I for radish, so the plateau arrives before the median radicle.",
+      "year": 1997,
+      "note": "Not a measured imbibition curve for a named cultivar."
+    },
+    {
+      "parameter": "imbibition.q10",
+      "confidence": "illustrative",
+      "source": "Mild physical Q10 for wetting.",
+      "year": 2003,
+      "note": "Same convention as the other two species so temperature comparisons stay fair."
+    },
+    {
+      "parameter": "imbibition.h_metabolism",
+      "confidence": "illustrative",
+      "source": "Shared teaching threshold: metabolism is allowed once relative hydration passes 0.35.",
+      "year": 1997,
+      "note": "Aligned with the water potentials at which this lot can still germinate."
+    },
+    {
+      "parameter": "imbibition.psi_floor_mpa",
+      "confidence": "illustrative",
+      "source": "Linear hydration isotherm ending at −2 MPa.",
+      "year": 2013,
+      "note": "Simplification of a real moisture release curve."
+    },
+    {
+      "parameter": "seedling.root_mm_per_degree_h",
+      "confidence": "illustrative",
+      "source": "About 13 mm of radicle per day at 20°C. Early radish radicles are vigorous compared with Arabidopsis.",
+      "year": 2026,
+      "note": "The swollen 'root' you harvest later is mostly hypocotyl plus root. This phase stops at the early seedling, before that swelling."
+    },
+    {
+      "parameter": "seedling.hypocotyl_mm_per_degree_h",
+      "confidence": "illustrative",
+      "source": "The hypocotyl lifts the cotyledons more slowly than the radicle extends. Order-of-magnitude only.",
+      "year": 2026,
+      "note": "No light response, so the stem does not shorten in sun as a real seedling would."
+    },
+    {
+      "parameter": "seedling.psi_min_mpa",
+      "confidence": "illustrative",
+      "source": "Elongation fades by −1.0 MPa even if a few tolerant seeds could still have germinated.",
+      "year": 1965,
+      "note": "Linear water multiplier, not a Lockhart growth equation."
+    },
+    {
+      "parameter": "seedling.respiration_q10",
+      "confidence": "medium",
+      "source": "Q10 ≈ 2 (Atkin & Tjoelker 2003), shared so the chemistry panel compares species fairly.",
+      "year": 2003,
+      "note": "Relative rate. Oil is not tracked molecule by molecule."
+    }
+  ],
+  "references": [
+    {
+      "id": "khan-2022",
+      "citation": "Khan J, Ullah S, Shah S, Sadaf, Khan S, Sulaiman. Modeling the upshots of induced temperature and water stress on germination and seedlings length of radish (Raphanus sativus L.) via hydrothermal time model. Vegetos. https://doi.org/10.1007/s42535-022-00490-4. Table 3: ψb(50) = −0.41 MPa, σ = 0.57 MPa, θHTT = 1008 MPa·°C·h, kT = 0.104, Tb/To/Tc = 15/20/40°C, R² = 0.527.",
+      "year": 2022
+    },
+    {
+      "id": "alvarado-bradford-2002",
+      "citation": "Alvarado V, Bradford KJ. A hydrothermal time model explains the cardinal temperatures for seed germination. Plant, Cell & Environment 25:1061–1069.",
+      "year": 2002
+    },
+    {
+      "id": "gummerson-1986",
+      "citation": "Gummerson RJ. The effect of constant temperatures and osmotic potentials on the germination of sugar beet. Journal of Experimental Botany 37:729–741. Origin of the hydrothermal-time combination.",
+      "year": 1986
+    },
+    {
+      "id": "bewley-2013",
+      "citation": "Bewley JD, Bradford KJ, Hilhorst HWM, Nonogaki H. Seeds: Physiology of Development, Germination and Dormancy. 3rd ed. Springer.",
+      "year": 2013
+    }
+  ]
+}
